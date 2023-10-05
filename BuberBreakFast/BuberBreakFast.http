@@ -1,0 +1,6 @@
+@BuberBreakFast_HostAddress = http://localhost:5022
+
+GET {{BuberBreakFast_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
