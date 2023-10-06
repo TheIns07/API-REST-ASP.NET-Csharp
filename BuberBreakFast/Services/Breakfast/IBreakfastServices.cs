@@ -1,10 +1,11 @@
-using BubberBreakfast.Contracts.Breakfast;
-
 namespace BubberBreakFast.Services.Breakfast;
+using BubberBreakFast.Models;
 
-public interface IBreakfastService{
-    BreakfastResponse CreateBreakfast(CreateBreakfastRequest request);
-    BreakfastResponse GetBreakfast(Guid id);
-    BreakfastResponse UpdateBreakfast(Guid id, UpdateBreakfastRequest request);
-    BreakfastResponse DeleteBreakfast(Guid id);
+public interface IBreakfastServices{
+
+    void CreateBreakFast(Breakfast breakfast);
+    Breakfast GetBreakfast(Guid id);
+    void UpdateBreakFast(Guid id, Breakfast breakfast);
+    void DeleteBreakFast(Guid id);
+
 }
