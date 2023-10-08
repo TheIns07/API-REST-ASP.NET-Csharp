@@ -1,11 +1,12 @@
 namespace BubberBreakFast.Services.Breakfast;
 using BubberBreakFast.Models;
+using ErrorOr;
 
 public interface IBreakfastServices{
 
-    void CreateBreakFast(Breakfast breakfast);
-    Breakfast GetBreakfast(Guid id);
-    void UpdateBreakFast(Guid id, Breakfast breakfast);
-    void DeleteBreakFast(Guid id);
+    ErrorOr<Created> CreateBreakFast(Breakfast breakfast);
+    ErrorOr<Breakfast> GetBreakfast(Guid id);
+    ErrorOr<UpdatedBreakfast> UpdateBreakFast(Guid id, Breakfast breakfast);
+    ErrorOr<Deleted> DeleteBreakFast(Guid id);
 
 }

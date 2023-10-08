@@ -28,3 +28,4 @@ C:\Users\Artur\Desktop\Projects\BubberMaster\BuberBreakfast\BuberBreakFast\obj\D
 C:\Users\Artur\Desktop\Projects\BubberMaster\BuberBreakfast\BuberBreakFast\obj\Debug\net8.0\BuberBreakFast.pdb
 C:\Users\Artur\Desktop\Projects\BubberMaster\BuberBreakfast\BuberBreakFast\obj\Debug\net8.0\BuberBreakFast.genruntimeconfig.cache
 C:\Users\Artur\Desktop\Projects\BubberMaster\BuberBreakfast\BuberBreakFast\obj\Debug\net8.0\ref\BuberBreakFast.dll
+C:\Users\Artur\Desktop\Projects\BubberMaster\BuberBreakfast\BuberBreakFast\bin\Debug\net8.0\ErrorOr.dll
