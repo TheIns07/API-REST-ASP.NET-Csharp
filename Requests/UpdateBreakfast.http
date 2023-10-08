@@ -1,8 +1,8 @@
-PUT http://localhost:5022/breakfasts/d41d880d-b805-48d3-a059-7e4bc873da82
+PUT http://localhost:5022/breakfasts/4b5aec5c-003b-41a6-abf3-81127ad94b2b
 Content-Type: application/json
 
 {
-    "@id": "d41d880d-b805-48d3-a059-7e4bc873da82",
+    "@id": "4b5aec5c-003b-41a6-abf3-81127ad94b2b",
     "name":"Vegan SunshineEEE",
     "description":"Vegan everything! Join us for a healthy breakfast..",
     "startDateTime":"2022-04-08T08:00:00",

@@ -1,4 +1,5 @@
 
+
 using BubberBreakFast.ServiceErrors;
 using ErrorOr;
 
@@ -24,11 +25,11 @@ public class BreakfastServices: IBreakfastServices
     }
 
 
-    public ErrorOr<UpdatedBreakfast> UpdateBreakFast(Guid id, Models.Breakfast breakfast)
+    public ErrorOr<Updated> UpdateBreakFast(Guid id, Models.Breakfast breakfast)
     {
-        var isNewly = !_breakfasts.ContainsKey(breakfast.Id);
+        var isNewlyCreated = !_breakfasts.ContainsKey(breakfast.Id);
         _breakfasts[id] = breakfast;
-        return new UpdatedBreakfast(isNewly);
+        return Result.Updated;
     }
 
     ErrorOr<Deleted> IBreakfastServices.DeleteBreakFast(Guid id)
@@ -36,5 +37,6 @@ public class BreakfastServices: IBreakfastServices
         _breakfasts.Remove(id);
         return Result.Deleted;
     }
+
 }
 

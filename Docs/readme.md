@@ -1,4 +1,8 @@
 # Buber Breakfast API
+Se realizo una API REST en .NET 6 en donde se implemento un servidor bajo el modelo MVC, conteniendo manejo de errores, definicion de rutas, creación de modelos y funcionalidades del framework especiales.
+
+Primero se generaron los dos sln: uno en donde se contienen los objetos utilizados por los controlares (Entidades principales) y otro en donde se genera toda la logica del servidor.
+
 
 - [Buber Breakfast API](#buber-breakfast-api)
   - [Create Breakfast](#create-breakfast)

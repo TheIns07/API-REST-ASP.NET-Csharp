@@ -9,37 +9,34 @@ namespace BubberBreakFast.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class BreakfastsController : ApiController
-{
+public class BreakfastsController: ApiController {
 
     public readonly IBreakfastServices _breakfastService;
 
     //Injection Dependencies
-    public BreakfastsController(IBreakfastServices breakfastService)
-    {
+    public BreakfastsController(IBreakfastServices breakfastService){
         _breakfastService = breakfastService;
     }
     [HttpPost]
-    public IActionResult CreateBreakFast(CreateBreakfastRequest req)
-    {
-        var breakfast = new Breakfast(
-            Guid.NewGuid(),
-            req.Name,
-            req.Description,
-            req.StartDateTime,
-            req.EndDateTime,
-            DateTime.UtcNow,
-            req.Savory,
-            req.Sweet
-        );
+    public IActionResult CreateBreakFast(CreateBreakfastRequest req){
 
+        ErrorOr<Breakfast> breakfastRequest = Breakfast.From(req);
+
+        if(breakfastRequest.IsError){  
+            return Problem(breakfastRequest.Errors);
+        }
+
+        var breakfast = breakfastRequest.Value;
         ErrorOr<Created> created = _breakfastService.CreateBreakFast(breakfast);
 
-        return created.Match(
-            created => CratedAsABreakFast(breakfast),
-            error => Problem(error));
+        if(created.IsError){
+            return Problem(created.Errors);
+        }
+
+        return CreatedAtAction(nameof(GetBreakFast), 
+                new {id = breakfast.Id}, 
+                    value: MapBreakfastResponse(breakfast));
     }
-    
 
     [HttpGet("{id:guid}")]
     public IActionResult GetBreakFast(Guid id)
@@ -51,55 +48,32 @@ public class BreakfastsController : ApiController
                 errors => Problem(errors));
     }
 
-
+  
     [HttpPut("{id:guid}")]
-    public IActionResult UpdateBreakFast(Guid id, UpdateBreakfastRequest req)
-    {
-        var breakfast = new Breakfast(
-            id,
-            req.Name,
-            req.Description,
-            req.StartDateTime,
-            req.EndDateTime,
-            DateTime.UtcNow,
-            req.Savory,
-            req.Sweet
-        );
-        ErrorOr<UpdatedBreakfast> updatedbreakfast = _breakfastService.UpdateBreakFast(id, breakfast);
-        if (updatedbreakfast.IsError)
-        {
-            return Problem(updatedbreakfast.Errors);
-        }
-        //Return 201 if created
-        return updatedbreakfast.Match(
-            upserted => upserted.isNewly ? 
-                (CratedAsABreakFast(breakfast)): 
-                    NoContent(),
-            error => Problem(error));
-    }
+    public IActionResult UpdateBreakFast(Guid id, UpdateBreakfastRequest req){
+       ErrorOr<Breakfast> requestBreakfast = Breakfast.From(id, req);
 
-    
+        if(requestBreakfast.IsError){
+            return Problem(requestBreakfast.Errors);
+        }
+ 
+        var breakfast = requestBreakfast.Value;
+        ErrorOr<Updated> updated =_breakfastService.UpdateBreakFast(id, breakfast);
+
+         return updated.Match(
+            updated => Ok(MapBreakfastResponse(breakfast)),
+            errors => Problem(errors)    
+         );
+    }
 
     [HttpDelete("{id:guid}")]
-    public IActionResult DeleteBreakFast(Guid id)
-    {
-        ErrorOr<Deleted> deleted = _breakfastService.DeleteBreakFast(id);
-        return deleted.Match(
-            deleted => NoContent(),
-            errors => Problem(errors)
-        );
+    public IActionResult DeleteBreakFast(Guid id){
+        _breakfastService.DeleteBreakFast(id);
+        return Ok(id);
     }
 
-    private CreatedAtActionResult CratedAsABreakFast(Breakfast breakfast)
-    {
-        return CreatedAtAction(
-                    actionName: nameof(GetBreakFast),
-                    routeValues: new { id = breakfast.Id },
-                    value: MapBreakfastResponse(breakfast)
-                );
-    }
 
-    private static BreakfastResponse MapBreakfastResponse(Breakfast breakfast)
+  private static BreakfastResponse MapBreakfastResponse(Breakfast breakfast)
     {
         return new BreakfastResponse(
                     breakfast.Id,
@@ -112,6 +86,14 @@ public class BreakfastsController : ApiController
                     breakfast.Sweet,
                     DateTime.UtcNow
                 );
+    }
+
+     private CreatedAtActionResult CreatedAtGetBreakfast(Breakfast breakfast)
+    {
+        return CreatedAtAction(
+            actionName: nameof(GetBreakFast),
+            routeValues: new { id = breakfast.Id },
+            value: MapBreakfastResponse(breakfast));
     }
 
 
